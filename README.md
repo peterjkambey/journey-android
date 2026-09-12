@@ -73,9 +73,13 @@ HTTP cleartext hanya diizinkan untuk `10.0.2.2`, `localhost`, dan `127.0.0.1`
 ## Akun demo
 
 `samuel.wong@student.anyflow.site` — akun member demo. Password demo = nilai
-`STUDENT_DEMO_PASSWORD` di `.env` server (`/var/www/journey/.env`) dan sengaja
-diisikan otomatis di layar login (masa demo), bersama URL API yang ditampilkan di
-bawah form.
+`STUDENT_DEMO_PASSWORD` di `.env` server (`/var/www/journey/.env`).
+
+Layar login menampilkan **kartu DEMO ACCOUNT** berisi alamat lengkap + password
+dan tombol *Use demo account* untuk mengisi ulang kedua field. Alamat itu juga
+terisi otomatis di field (font diperkecil) — field satu baris akan memotong
+alamat panjang, dan itulah yang dulu membuat alamat terlihat seperti salah.
+Data akunnya sendiri tidak pernah dipendekkan.
 
 ## Pasang ke HP (wireless debugging)
 
