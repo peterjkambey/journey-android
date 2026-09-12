@@ -8,11 +8,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -25,11 +26,20 @@ import com.anyflow.journey.ui.WineButton
 /**
  * Lubang mockup: tidak ada layar login di prototype. Endpoint API butuh token
  * Sanctum, jadi layar ini wajib. Akun demo sudah terisi supaya demo cepat.
+ *
+ * Catatan 12-09-2026: alamat email demo panjang (samuel.wong@student.anyflow.site)
+ * sehingga di field satu baris ujungnya terpotong dan terlihat seperti email
+ * salah. Karena itu ada kartu "Demo account" yang menampilkan alamat lengkap
+ * (bisa dibaca utuh / di-tap untuk mengisi ulang), dan teks di field diperkecil
+ * supaya lebih banyak karakter terlihat. Email TIDAK dipendekkan di data.
  */
 @Composable
 fun LoginScreen(vm: JourneyViewModel) {
-    var email by remember { mutableStateOf("samuel.wong@student.anyflow.site") }
-    var password by remember { mutableStateOf("journey##keren") }
+    val demoEmail = "samuel.wong@student.anyflow.site"
+    val demoPassword = "journey##keren"
+
+    var email by remember { mutableStateOf(demoEmail) }
+    var password by remember { mutableStateOf(demoPassword) }
 
     Column(
         modifier = Modifier
@@ -46,13 +56,59 @@ fun LoginScreen(vm: JourneyViewModel) {
             color = Brand.Muted,
         )
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(24.dp))
+
+        // Kartu akun demo: alamat panjang ditampilkan utuh (wrap), jadi tidak ada
+        // lagi kesan "email terpotong".
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(14.dp),
+            color = Brand.WineSoft,
+        ) {
+            Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
+                Text(
+                    text = "DEMO ACCOUNT",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Brand.WineDeep,
+                )
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    text = demoEmail,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Brand.Ink,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = "Password: $demoPassword",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Brand.Body,
+                )
+                Spacer(Modifier.height(4.dp))
+                TextButton(
+                    onClick = {
+                        email = demoEmail
+                        password = demoPassword
+                    },
+                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+                ) {
+                    Text(
+                        text = "Use demo account",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Brand.Wine,
+                    )
+                }
+            }
+        }
+
+        Spacer(Modifier.height(20.dp))
 
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
             singleLine = true,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 13.sp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RoundedCornerShape(14.dp),
             modifier = Modifier.fillMaxWidth(),
@@ -65,6 +121,7 @@ fun LoginScreen(vm: JourneyViewModel) {
             onValueChange = { password = it },
             label = { Text("Password") },
             singleLine = true,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 13.sp),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             shape = RoundedCornerShape(14.dp),
@@ -89,11 +146,11 @@ fun LoginScreen(vm: JourneyViewModel) {
         Spacer(Modifier.height(20.dp))
 
         Text(
-            text = "Demo account: samuel.wong@student.anyflow.site · journey##keren",
-            style = MaterialTheme.typography.bodySmall,
+            text = "API",
+            style = MaterialTheme.typography.labelSmall,
             color = Brand.Muted,
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(2.dp))
         Text(
             text = com.anyflow.journey.BuildConfig.API_BASE_URL,
             style = MaterialTheme.typography.labelSmall,
