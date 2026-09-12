@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +9,22 @@ plugins {
 android {
     namespace = "com.anyflow.journey"
     compileSdk = 35
+
+    // Signing release dibaca dari keystore.properties (GITIGNORED) — pola sama
+    // dengan hris-android supaya update APK release tidak bentrok signature.
+    val keystoreProps = Properties().apply {
+        val f = rootProject.file("keystore.properties")
+        if (f.exists()) f.inputStream().use { load(it) }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file(keystoreProps.getProperty("storeFile", "keystore/journey-release.keystore"))
+            storePassword = keystoreProps.getProperty("storePassword", "")
+            keyAlias = keystoreProps.getProperty("keyAlias", "journey")
+            keyPassword = keystoreProps.getProperty("keyPassword", "")
+        }
+    }
 
     defaultConfig {
         applicationId = "com.anyflow.journey"
@@ -42,6 +60,7 @@ android {
         debug { isMinifyEnabled = false }
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
