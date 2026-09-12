@@ -63,6 +63,17 @@ fun AppRoot(initialTab: Tab? = null) {
     } else {
         LaunchedEffect(Unit) { vm.refreshHome() }
         MainShell(vm = vm, startTab = initialTab ?: Tab.HOME, snackbar = snackbar)
+
+        // Sheet "Share this moment?" hidup di shell: muncul setelah langkah
+        // latihan selesai, baik dari Home maupun dari layar hari.
+        val prompt = vm.sharePrompt
+        if (prompt != null) {
+            com.anyflow.journey.ui.screens.ShareMomentSheet(
+                vm = vm,
+                prompt = prompt,
+                onDismiss = { vm.dismissSharePrompt() },
+            )
+        }
     }
 }
 

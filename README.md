@@ -67,6 +67,10 @@ sebagai `BuildConfig.API_BASE_URL`). Bisa dioverride saat build:
 
 (`10.0.2.2` = host PC dari dalam emulator Android.)
 
+Cleartext HTTP hanya diizinkan untuk host dev `10.0.2.2` / `localhost` /
+`127.0.0.1` lewat `app/src/main/res/xml/network_security_config.xml`; domain
+lain tetap wajib HTTPS. Build default selalu memakai production URL di atas.
+
 Semua endpoint butuh header `Authorization: Bearer <token>` + `Accept: application/json`,
 kecuali `POST auth/login`.
 

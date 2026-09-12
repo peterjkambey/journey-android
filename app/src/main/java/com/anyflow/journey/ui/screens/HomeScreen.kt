@@ -44,11 +44,6 @@ fun HomeScreen(
 
     var expandedStep by remember { mutableStateOf<String?>(null) }
 
-    val prompt = vm.sharePrompt
-    if (prompt != null) {
-        ShareMomentSheet(vm = vm, prompt = prompt, onDismiss = { vm.dismissSharePrompt() })
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -371,10 +366,11 @@ fun MyProgramCard(item: MyProgram, onOpen: () -> Unit, onContinue: () -> Unit) {
     }
 }
 
-/** Bottom sheet "Share this moment?" setelah langkah pertama selesai. */
+/** Bottom sheet "Share this moment?" — dirender di shell supaya bisa muncul
+ *  dari Home maupun dari layar hari. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ShareMomentSheet(vm: JourneyViewModel, prompt: SharePrompt, onDismiss: () -> Unit) {
+fun ShareMomentSheet(vm: JourneyViewModel, prompt: SharePrompt, onDismiss: () -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var caption by remember { mutableStateOf("") }
 
